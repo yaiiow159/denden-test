@@ -6,14 +6,12 @@ import lombok.experimental.UtilityClass;
 /**
  * HTTP 請求工具類
  * 
- * <p>提供與 HTTP 請求相關的工具方法，例如：
- * <ul>
- *   <li>取得客戶端真實 IP 地址</li>
- *   <li>取得 User-Agent</li>
- * </ul>
  */
-@UtilityClass
-public class RequestUtils {
+public final class RequestUtils {
+
+    private RequestUtils() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
 
     /**
      * 取得客戶端真實 IP 地址

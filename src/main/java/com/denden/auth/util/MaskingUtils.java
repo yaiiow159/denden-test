@@ -5,19 +5,14 @@ import lombok.experimental.UtilityClass;
 /**
  * 資料遮罩工具類
  * 
- * <p>提供各種敏感資料的遮罩功能，用於日誌記錄和資料展示時保護隱私：
- * <ul>
- *   <li>Email 地址遮罩</li>
- *   <li>Token 遮罩</li>
- *   <li>手機號碼遮罩</li>
- *   <li>身分證字號遮罩</li>
- * </ul>
- * 
  * @author Member Auth System
  * @since 1.0.0
  */
-@UtilityClass
-public class MaskingUtils {
+public final class MaskingUtils {
+
+    private MaskingUtils() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
     
     private static final String MASK_SYMBOL = "***";
     

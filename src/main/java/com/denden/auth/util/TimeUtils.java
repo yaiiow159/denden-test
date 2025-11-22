@@ -7,17 +7,14 @@ import java.time.ZoneId;
 /**
  * 時間工具類
  * 
- * <p>提供時間相關的轉換功能，包含：
- * <ul>
- *   <li>LocalDateTime 與 Unix timestamp (毫秒) 互轉</li>
- *   <li>時區處理</li>
- * </ul>
- * 
  * @author Member Auth System
  * @since 1.0.0
  */
-@UtilityClass
-public class TimeUtils {
+public final class TimeUtils {
+    
+    private TimeUtils() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
     
     /**
      * 將 LocalDateTime 轉換為 Unix timestamp (毫秒)

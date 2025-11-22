@@ -14,7 +14,6 @@
     <property name="FILE_LOG_PATTERN" 
               value="%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
     
-    <!-- Development Profile: 彩色控制台輸出 -->
     <springProfile name="dev">
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
@@ -33,7 +32,6 @@
         <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
     </springProfile>
     
-    <!-- Production Profile: JSON 格式輸出到檔案 -->
     <springProfile name="prod">
         <!-- 控制台輸出 (簡化格式) -->
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">

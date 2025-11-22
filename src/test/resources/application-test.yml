@@ -1,12 +1,17 @@
 spring:
   application:
-    name: member-auth-system-test
+    name: member-auth-system-test  
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+      - org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration
   
   datasource:
-    url: jdbc:postgresql://localhost:5432/member_auth_test
-    username: admin
-    password: admin
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: 
+    driver-class-name: org.h2.Driver
   
   jpa:
     hibernate:
@@ -15,7 +20,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.H2Dialect
+  
+  flyway:
+    enabled: false
   
   data:
     redis:
