@@ -1,0 +1,74 @@
+# Docker Compose Override for Development
+# This file is automatically loaded by docker-compose and overrides settings in docker-compose.yml
+# Use this for local development configurations
+
+version: '3.8'
+
+services:
+  postgres:
+    # Expose PostgreSQL port for local development tools
+    ports:
+      - "5432:5432"
+    # Disable resource limits in development
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+
+  redis:
+    # Expose Redis port for local development tools
+    ports:
+      - "6379:6379"
+    # Disable password requirement in development (not recommended for production)
+    command: >
+      redis-server
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+      --appendonly yes
+      --appendfsync everysec
+    # Disable resource limits in development
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+
+  app:
+    # Override environment for development
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      # Enable debug logging
+      LOGGING_LEVEL_ROOT: INFO
+      LOGGING_LEVEL_COM_DENDEN: DEBUG
+      # Reduce JVM memory for development
+      JAVA_OPTS: >-
+        -Xms256m
+        -Xmx512m
+        -XX:+UseG1GC
+        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+    # Expose debug port
+    ports:
+      - "8080:8080"
+      - "5005:5005"  # Java Debug Wire Protocol
+    # Mount source code for hot reload (if using spring-boot-devtools)
+    volumes:
+      - ./logs:/app/logs
+      - ./target:/app/target
+    # Disable resource limits in development
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 4G
+
+volumes:
+  # Use Docker-managed volumes in development for easier cleanup
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  app_logs:
+    driver: local
+  app_tmp:
+    driver: local

@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: member-auth-system-test
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/member_auth_test
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 
+      timeout: 2000ms
+
+app:
+  security:
+    jwt:
+      secret: test-secret-key-for-testing-purposes-only-min-256-bits-required
+      expiration-ms: 3600000
+      issuer: member-auth-system-test
+    rate-limit:
+      max-requests: 100
+      window-seconds: 60
+    otp:
+      length: 6
+      expiration-seconds: 300
+      max-attempts: 3
+    verification-token:
+      expiration-hours: 24
+    account-lock:
+      max-failed-attempts: 5
+      lock-duration-minutes: 30
+  
+  mail:
+    mailjet:
+      api-key: test-api-key
+      secret-key: test-secret-key
+      from-email: test@example.com
+      from-name: Test System
+  
+  base-url: http://localhost:8080
+  cors:
+    allowed-origins: http://localhost:3000
+
+logging:
+  level:
+    root: INFO
+    com.denden.auth: DEBUG
