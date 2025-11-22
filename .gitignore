@@ -56,5 +56,5 @@ Thumbs.db
 logs/
 temp/
 
-# kiro
-./kiro
+# Kiro IDE
+.kiro/
