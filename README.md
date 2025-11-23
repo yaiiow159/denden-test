@@ -1,8 +1,6 @@
-# Member Authentication System (會員認證系統)
+# Denden-Test
 
-
-
-企業級會員認證系統，提供完整的註冊、雙因素認證登入與帳號管理功能。
+提供註冊、雙因素認證登入與基本帳號管理功能
 
 ##  功能特性
 
@@ -347,11 +345,6 @@ tail -f /var/lib/member-auth/logs/member-auth-system.log
 ```bash
 curl http://localhost:8080/actuator/metrics
 ```
-
-##  作者
-
-- **yaiiow159** - [GitHub](https://github.com/yaiiow159)
-
 
 
 
