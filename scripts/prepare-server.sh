@@ -31,7 +31,8 @@ sudo chown -R $USER:$USER /opt/member-auth
 sudo chown -R $USER:$USER /var/lib/member-auth
 
 # 設置日誌目錄權限（允許 Docker 容器寫入）
-sudo chmod 755 /var/lib/member-auth/logs
+sudo chmod 777 /var/lib/member-auth/logs
+echo -e "${GREEN}日誌目錄權限已設置為 777（允許容器寫入）${NC}"
 
 # 檢查 Docker 是否安裝
 echo -e "${GREEN}[3/5] 檢查 Docker...${NC}"

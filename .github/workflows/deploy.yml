@@ -104,8 +104,8 @@ jobs:
             echo "Preparing log directories..."
             sudo mkdir -p /var/lib/member-auth/logs
             sudo chown -R $(id -u):$(id -g) /var/lib/member-auth/logs
-            sudo chmod 755 /var/lib/member-auth/logs
-            echo "Log directory ready: /var/lib/member-auth/logs"
+            sudo chmod 777 /var/lib/member-auth/logs
+            echo "Log directory ready with full permissions: /var/lib/member-auth/logs"
             
             # 停止舊容器
             echo "Stopping old containers..."
@@ -142,7 +142,16 @@ jobs:
             # 檢查是否有權限錯誤
             echo "Checking for permission errors..."
             if docker-compose logs app | grep -q "Permission denied"; then
-              echo "Warning: Permission errors detected in logs"
+              echo "ERROR: Permission errors detected in logs"
+              docker-compose logs app | grep "Permission denied" | tail -10
+              echo "Attempting to fix permissions..."
+              sudo chmod 777 /var/lib/member-auth/logs
+              docker-compose restart app
+              sleep 15
+              if docker-compose logs app | grep -q "Permission denied"; then
+                echo "ERROR: Permission errors persist after fix"
+                exit 1
+              fi
             else
               echo "No permission errors found"
             fi
