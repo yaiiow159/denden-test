@@ -162,7 +162,7 @@ jobs:
           
           # 重試機制（最多 3 次）
           for i in {1..3}; do
-            echo "Attempt $i/5..."
+            echo "Attempt $i/3..."
             if curl -f http://${{ secrets.SERVER_HOST }}:8080/actuator/health; then
               echo "Health check passed!"
               exit 0
@@ -171,5 +171,5 @@ jobs:
             sleep 10
           done
           
-          echo "Health check failed after 5 attempts"
+          echo "Health check failed after 3 attempts"
           exit 1
