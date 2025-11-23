@@ -58,7 +58,6 @@ else
     echo -e "${GREEN}Docker Compose 已安裝: $(docker-compose --version)${NC}"
 fi
 
-# 創建 .env 文件模板（如果不存在）
 echo -e "${GREEN}[5/5] 檢查環境變數文件...${NC}"
 if [ ! -f /opt/member-auth/.env ]; then
     echo -e "${YELLOW}創建 .env 文件模板...${NC}"

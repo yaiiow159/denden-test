@@ -44,7 +44,6 @@ public class JavaMailConfig {
     
     @Bean
     public JavaMailSender javaMailSender() {
-        // 驗證必要配置
         if (host == null || host.isBlank()) {
             throw new IllegalStateException("SMTP 主機不能為空");
         }
