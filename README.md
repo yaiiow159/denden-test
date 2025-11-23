@@ -20,7 +20,7 @@
 -  **完整日誌** - 結構化 JSON 日誌
 -  **容器化部署** - Docker + Docker Compose
 -  **CI/CD 自動化** - GitHub Actions 自動測試與部署
-- 📖 **API 文件** - Swagger UI 互動式文件
+-  **API 文件** - Swagger UI 互動式文件
 
 ## 🛠 技術棧
 
