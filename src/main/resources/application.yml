@@ -64,6 +64,20 @@ spring:
           max-idle: 8
           min-idle: 2
           max-wait: -1ms
+  
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
 app:
   security:
@@ -92,21 +106,19 @@ app:
       secret-key: ${MAILJET_SECRET_KEY:}
       from-email: ${MAILJET_FROM_EMAIL:noreply@example.com}
       from-name: ${MAILJET_FROM_NAME:Member Auth System}
-
-spring:
-  mail:
-    host: ${MAIL_HOST:smtp.gmail.com}
-    port: ${MAIL_PORT:587}
-    username: ${MAIL_USERNAME:}
-    password: ${MAIL_PASSWORD:}
-    protocol: smtp
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-            required: true
+    javamail:
+      host: ${MAIL_HOST:smtp.gmail.com}
+      port: ${MAIL_PORT:587}
+      username: ${MAIL_USERNAME:}
+      password: ${MAIL_PASSWORD:}
+      protocol: smtp
+      properties:
+        mail:
+          smtp:
+            auth: true
+            starttls:
+              enable: true
+              required: true
   
   base-url: ${APP_BASE_URL:http://localhost:8080}
   cors:
