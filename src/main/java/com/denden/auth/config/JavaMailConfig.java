@@ -22,20 +22,16 @@ import java.util.Properties;
 @Configuration
 @ConditionalOnProperty(name = "app.mail.provider", havingValue = "javamail")
 @ConfigurationProperties(prefix = "spring.mail")
-@Validated
 @Getter
 @Setter
 public class JavaMailConfig {
     
-    @NotBlank(message = "SMTP 主機不能為空")
     private String host;
     
     private int port = 587;
     
-    @NotBlank(message = "SMTP 使用者名稱不能為空")
     private String username;
     
-    @NotBlank(message = "SMTP 密碼不能為空")
     private String password;
     
     private String protocol = "smtp";
@@ -48,6 +44,17 @@ public class JavaMailConfig {
     
     @Bean
     public JavaMailSender javaMailSender() {
+        // 驗證必要配置
+        if (host == null || host.isBlank()) {
+            throw new IllegalStateException("SMTP 主機不能為空");
+        }
+        if (username == null || username.isBlank()) {
+            throw new IllegalStateException("SMTP 使用者名稱不能為空");
+        }
+        if (password == null || password.isBlank()) {
+            throw new IllegalStateException("SMTP 密碼不能為空");
+        }
+        
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         
         mailSender.setHost(host);
