@@ -18,8 +18,8 @@ import jakarta.validation.constraints.NotBlank;
  * 
  */
 @Configuration
+@ConditionalOnProperty(name = "MAIL_PROVIDER", havingValue = "mailjet", matchIfMissing = false)
 @ConfigurationProperties(prefix = "app.mail.mailjet")
-@Validated
 @Getter
 @Setter
 public class MailjetConfig {
@@ -39,9 +39,9 @@ public class MailjetConfig {
     
     @Bean
     @ConditionalOnProperty(
-        name = "app.mail.provider", 
+        name = "MAIL_PROVIDER", 
         havingValue = "mailjet", 
-        matchIfMissing = true
+        matchIfMissing = false
     )
     public MailjetClient mailjetClient() {
         ClientOptions options = ClientOptions.builder()

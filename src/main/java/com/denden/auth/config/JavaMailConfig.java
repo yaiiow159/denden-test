@@ -20,8 +20,8 @@ import java.util.Properties;
  * @since 1.0.0
  */
 @Configuration
-@ConditionalOnProperty(name = "app.mail.provider", havingValue = "javamail")
-@ConfigurationProperties(prefix = "spring.mail")
+@ConditionalOnProperty(name = "MAIL_PROVIDER", havingValue = "javamail", matchIfMissing = false)
+@ConfigurationProperties(prefix = "app.mail.javamail")
 @Getter
 @Setter
 public class JavaMailConfig {
@@ -35,12 +35,6 @@ public class JavaMailConfig {
     private String password;
     
     private String protocol = "smtp";
-    
-    private boolean auth = true;
-    
-    private boolean starttlsEnable = true;
-    
-    private boolean starttlsRequired = true;
     
     @Bean
     public JavaMailSender javaMailSender() {
@@ -63,9 +57,9 @@ public class JavaMailConfig {
         mailSender.setProtocol(protocol);
         
         Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.smtp.auth", auth);
-        props.put("mail.smtp.starttls.enable", starttlsEnable);
-        props.put("mail.smtp.starttls.required", starttlsRequired);
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.starttls.required", "true");
         props.put("mail.smtp.connectiontimeout", "5000");
         props.put("mail.smtp.timeout", "5000");
         props.put("mail.smtp.writetimeout", "5000");
