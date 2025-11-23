@@ -21,8 +21,6 @@
 - **Email**: Mailjet API / JavaMail (可切換)
 - **Build**: Maven
 
-## 快速開始
-
 ### 前置需求
 
 - Java 17+
@@ -48,69 +46,6 @@ CREATE DATABASE member_auth;
 4. 啟動 Redis：
 ```bash
 docker run -d -p 6379:6379 redis:7-alpine
-```
-
-## 🚀 部署
-
-### Docker 部署
-
-使用 Docker Compose 快速部署：
-
-```bash
-# 開發環境
-docker-compose up -d
-
-# 生產環境
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-```
-
-### CI/CD 自動部署
-
-本專案使用 GitHub Actions 實現自動化部署到 Vultr 虛擬機。
-
-**快速設置**：
-
-1. **準備伺服器**（在 Vultr 虛擬機上執行）：
-   ```bash
-   curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/scripts/setup-server.sh -o setup-server.sh
-   chmod +x setup-server.sh
-   sudo ./setup-server.sh
-   ```
-
-2. **配置 GitHub Secrets**：
-   - `SERVER_HOST`: `139.180.195.36`
-   - `SERVER_USER`: `deploy` 或 `root`
-   - `SERVER_SSH_KEY`: SSH 私鑰內容
-   - `SERVER_PORT`: `22`
-
-3. **推送代碼觸發部署**：
-   ```bash
-   git push origin main
-   ```
-
-4. **驗證部署**：
-   ```bash
-   curl http://139.180.195.36:8080/actuator/health
-   ```
-
-**詳細文檔**：
-- 📖 [完整部署指南](./docs/DEPLOYMENT.md)
-- ⚡ [快速開始](./docs/QUICK_START.md)
-
-### 部署架構
-
-```
-GitHub Repository
-    ↓ (push to main)
-GitHub Actions
-    ↓ (build & test)
-Docker Image (GHCR)
-    ↓ (deploy)
-Vultr Server (139.180.195.36)
-    ├── Nginx (反向代理)
-    ├── App Container (Spring Boot)
-    ├── PostgreSQL Container
-    └── Redis Container
 ```
 
 5. 執行應用程式：
@@ -151,20 +86,11 @@ REDIS_PASSWORD=
 JWT_SECRET=your-secret-key-min-256-bits
 JWT_EXPIRATION_MS=86400000
 
-# Email Provider (mailjet 或 javamail)
-MAIL_PROVIDER=mailjet
-
-# Mailjet 配置
+# Mailjet
 MAILJET_API_KEY=your_api_key
 MAILJET_SECRET_KEY=your_secret_key
 MAILJET_FROM_EMAIL=noreply@yourdomain.com
 MAILJET_FROM_NAME=Member Auth System
-
-# JavaMail 配置（可選，當 MAIL_PROVIDER=javamail 時使用）
-# MAIL_HOST=smtp.gmail.com
-# MAIL_PORT=587
-# MAIL_USERNAME=your-email@gmail.com
-# MAIL_PASSWORD=your-app-password
 
 # Application
 APP_BASE_URL=http://localhost:8080
@@ -309,21 +235,7 @@ docker-compose logs app | grep -i "email"
 # 驗證 Mailjet 配置
 curl -X GET https://api.mailjet.com/v3/REST/contact \
   -u "$MAILJET_API_KEY:$MAILJET_SECRET_KEY"
-
-# 切換到 JavaMail（如 Mailjet 不可用）
-# 編輯 .env
-MAIL_PROVIDER=javamail
-MAIL_HOST=smtp.gmail.com
-MAIL_USERNAME=your-email@gmail.com
-MAIL_PASSWORD=your-app-password
-
-# 重啟服務
-docker-compose restart app
 ```
-
-**郵件渠道切換指南**：
-- 📧 [郵件發送渠道切換指南](./docs/EMAIL_PROVIDER_GUIDE.md)
-- 🧪 [郵件渠道測試指南](./docs/EMAIL_PROVIDER_TESTING.md)
 
 ## 授權
 
