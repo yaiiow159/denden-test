@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
  * @since 1.0.0
  */
 @Component
-@ConditionalOnProperty(name = "app.mail.provider", havingValue = "mailjet", matchIfMissing = true)
+@ConditionalOnProperty(name = "MAIL_PROVIDER", havingValue = "mailjet", matchIfMissing = false)
 @RequiredArgsConstructor
 @Slf4j
 public class MailjetEmailSender implements EmailSender {

@@ -21,14 +21,14 @@ import org.springframework.stereotype.Component;
  * @since 1.0.0
  */
 @Component
-@ConditionalOnProperty(name = "app.mail.provider", havingValue = "javamail")
+@ConditionalOnProperty(name = "MAIL_PROVIDER", havingValue = "javamail")
 @RequiredArgsConstructor
 @Slf4j
 public class JavaMailEmailSender implements EmailSender {
     
     private final JavaMailSender javaMailSender;
     
-    @Value("${spring.mail.username}")
+    @Value("${app.mail.javamail.username}")
     private String fromEmail;
     
     @Value("${app.mail.from-name:Member Auth System}")
