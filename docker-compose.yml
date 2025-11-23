@@ -60,6 +60,8 @@ services:
       JAVA_OPTS: -Xms512m -Xmx1024m
     ports:
       - "8080:8080"
+    volumes:
+      - app_logs:/app/logs
     depends_on:
       postgres:
         condition: service_healthy
@@ -76,6 +78,7 @@ services:
 volumes:
   postgres_data:
   redis_data:
+  app_logs:
 
 networks:
   default:

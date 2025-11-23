@@ -10,10 +10,17 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
+# 創建用戶和組
 RUN addgroup -S spring && adduser -S spring -G spring
-USER spring:spring
 
+# 創建日誌目錄並設置權限
+RUN mkdir -p /app/logs && chown -R spring:spring /app/logs
+
+# 複製 jar 文件
 COPY --from=build /app/target/*.jar app.jar
+
+# 切換到非 root 用戶
+USER spring:spring
 
 EXPOSE 8080
 

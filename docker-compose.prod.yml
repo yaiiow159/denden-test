@@ -17,10 +17,13 @@ services:
 
   app:
     image: ghcr.io/${GITHUB_REPOSITORY:-yaiiow159/member-auth-system}:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      JAVA_OPTS: -Xms1024m -Xmx2048m -XX:+UseG1GC
+      JAVA_OPTS: -Xms1024m -Xmx2048m -XX:+UseG1GC -XX:MaxMetaspaceSize=512m
     ports:
       - "8080:8080"
     volumes:
-      - /var/log/member-auth:/app/logs
+      - /var/lib/member-auth/logs:/app/logs
