@@ -22,7 +22,7 @@
 -  **CI/CD 自動化** - GitHub Actions 自動測試與部署
 -  **API 文件** - Swagger UI 互動式文件
 
-## 🛠 技術棧
+## 技術棧
 
 ### 後端框架
 - **Framework**: Spring Boot 3.2.0
