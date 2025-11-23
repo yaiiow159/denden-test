@@ -1,4 +1,4 @@
-# Denden-Test
+# denden-Test
 
 提供註冊、雙因素認證登入與基本帳號管理功能
 
@@ -199,18 +199,6 @@ mvn clean test jacoco:report
 4. ✅ 部署到伺服器
 5. ✅ 執行健康檢查
 
-#### 設定 GitHub Secrets
-
-在 GitHub Repository Settings > Secrets 中添加：
-
-| Secret | 說明 |
-|--------|------|
-| `SERVER_HOST` | 伺服器 IP 或域名 |
-| `SERVER_USER` | SSH 使用者名稱 |
-| `SERVER_SSH_KEY` | SSH 私鑰 |
-| `SERVER_PORT` | SSH 端口（預設 22） |
-| `GHCR_TOKEN` | GitHub Personal Access Token |
-
 #### 伺服器準備
 
 ```bash
@@ -266,7 +254,7 @@ member-auth-system/
 
 ### 郵件服務配置
 
-#### Mailjet（推薦）
+#### Mailjet
 
 ```bash
 MAIL_PROVIDER=mailjet
@@ -298,31 +286,6 @@ LOGIN_HISTORY_RETENTION_DAYS=90
 # 清理任務執行時間（Cron 表達式）
 LOGIN_HISTORY_CLEANUP_CRON=0 0 2 * * ?
 ```
-
-##  故障排除
-
-### 常見問題
-
-**1. 郵件發送失敗**
-- 檢查 `MAIL_PROVIDER` 設定
-- 確認 API Key 或密碼正確
-- Gmail 需要應用程式密碼，且密碼不能有空格
-
-**2. 資料庫連線失敗**
-- 確認 PostgreSQL 容器正在運行
-- 檢查 `.env` 中的資料庫配置
-
-**3. Redis 連線失敗**
-- 確認 Redis 容器正在運行
-- 檢查 Redis 密碼設定
-
-**4. JWT Token 無效**
-- 確認 `JWT_SECRET` 至少 256 位元
-- 檢查 Token 是否過期
-
-詳細故障排除請參考 [DEPLOYMENT.md](DEPLOYMENT.md#故障排除)
-
-##  監控與日誌
 
 ### 健康檢查
 
