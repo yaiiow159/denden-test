@@ -51,7 +51,7 @@
 - **CI/CD**: GitHub Actions
 - **Registry**: GitHub Container Registry (GHCR)
 
-## 📋 前置需求
+## 前置需求
 
 ### 開發環境
 - Java 17+
@@ -121,7 +121,7 @@ docker-compose logs -f app
 - **健康檢查**: http://localhost:8080/actuator/health
 - **API 端點**: http://localhost:8080/api/v1
 
-## 📡 API 端點
+##  API 端點
 
 ### 認證 API
 
@@ -163,7 +163,7 @@ curl -X POST http://localhost:8080/api/v1/auth/login \
   }'
 ```
 
-## 🧪 測試
+## 測試
 
 ### 運行所有測試
 
@@ -189,7 +189,7 @@ mvn clean test jacoco:report
 
 報告位置：`target/site/jacoco/index.html`
 
-## 🚢 部署
+## 部署
 
 ### 自動部署（推薦）
 
@@ -230,7 +230,7 @@ nano /opt/member-auth/.env
 
 詳細步驟請參考 [DEPLOYMENT.md](DEPLOYMENT.md)
 
-## 📁 專案結構
+## 專案結構
 
 ```
 member-auth-system/
@@ -264,7 +264,7 @@ member-auth-system/
 └── README.md                   # 本文件
 ```
 
-## 🔧 配置說明
+## 配置說明
 
 ### 郵件服務配置
 
