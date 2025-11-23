@@ -75,7 +75,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT || 22 }}
-          source: "docker-compose.yml,docker-compose.prod.yml,Dockerfile,.env.example,.dockerignore"
+          source: "docker-compose.yml,docker-compose.prod.yml,.env.example"
           target: "/opt/member-auth"
           overwrite: true
       

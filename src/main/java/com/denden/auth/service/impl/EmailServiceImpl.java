@@ -63,7 +63,7 @@ public class EmailServiceImpl implements EmailService {
     }
     
     @Override
-    @Async
+    @Async()
     @Retryable(
         retryFor = {EmailSendException.class},
         maxAttempts = 3,

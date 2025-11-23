@@ -6,31 +6,44 @@
     <title>驗證您的帳號</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
             color: #333;
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             margin: 0;
-            padding: 0;
+            padding: 20px;
         }
         .container {
             max-width: 600px;
-            margin: 20px auto;
+            margin: 0 auto;
             background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
             overflow: hidden;
         }
         .header {
-            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px;
+            padding: 40px 30px;
             text-align: center;
+            position: relative;
+        }
+        .header::before {
+            content: '✉️';
+            font-size: 64px;
+            display: block;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
         .header h1 {
             margin: 0;
-            font-size: 28px;
-            font-weight: 600;
+            font-size: 32px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .content {
             padding: 40px 30px;
@@ -45,60 +58,89 @@
             margin: 35px 0;
         }
         .verify-button {
-            background-color: #007bff;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 14px 40px;
+            padding: 16px 48px;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 50px;
             display: inline-block;
-            font-weight: bold;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         .verify-button:hover {
-            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
         }
         .link-section {
-            background-color: #f8f9fa;
-            border-radius: 5px;
-            padding: 20px;
-            margin: 25px 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 30px 0;
+            border: 1px solid #e1e8ed;
         }
         .link-section p {
             font-size: 14px;
-            color: #666;
-            margin: 0 0 10px 0;
+            color: #4a5568;
+            margin: 0 0 12px 0;
+            font-weight: 500;
         }
         .link-section a {
-            color: #007bff;
+            color: #667eea;
             word-break: break-all;
             text-decoration: none;
+            font-weight: 500;
         }
         .link-section a:hover {
+            color: #764ba2;
             text-decoration: underline;
         }
         .info-box {
-            background-color: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 4px;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 5px solid #fdcb6e;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(253, 203, 110, 0.2);
         }
         .info-box p {
             margin: 0;
-            font-size: 14px;
-            color: #856404;
+            font-size: 15px;
+            color: #2d3436;
+            font-weight: 500;
         }
         .footer {
-            background-color: #f8f9fa;
-            padding: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
             text-align: center;
-            border-top: 1px solid #e9ecef;
+            color: white;
         }
         .footer p {
-            margin: 5px 0;
-            font-size: 12px;
-            color: #999;
+            margin: 8px 0;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        @media only screen and (max-width: 600px) {
+            .container {
+                border-radius: 0;
+                margin: 0;
+            }
+            body {
+                padding: 0;
+            }
+            .header h1 {
+                font-size: 26px;
+            }
+            .verify-button {
+                padding: 14px 36px;
+                font-size: 16px;
+            }
+            .content {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
@@ -109,9 +151,9 @@
         </div>
         
         <div class="content">
-            <p>親愛的用戶，您好！</p>
+            <p style="font-size: 18px; font-weight: 500;">親愛的用戶，您好！👋</p>
             
-            <p>感謝您註冊 Member Auth System！為了確保您的帳號安全，請點擊下方按鈕驗證您的 Email 地址以啟用帳號。</p>
+            <p>感謝您註冊 <strong style="color: #667eea;">Member Auth System</strong>！為了確保您的帳號安全，請點擊下方按鈕驗證您的 Email 地址以啟用帳號。</p>
             
             <div class="button-container">
                 <a href="{{VERIFICATION_LINK}}" class="verify-button">
@@ -134,8 +176,9 @@
         </div>
         
         <div class="footer">
-            <p>如果您沒有註冊此帳號，請忽略此郵件。</p>
-            <p style="margin-top: 15px;">&copy; 2024 Member Auth System. All rights reserved.</p>
+            <p style="font-size: 14px;">如果您沒有註冊此帳號，請忽略此郵件。</p>
+            <p style="margin-top: 20px; font-size: 12px; opacity: 0.8;">&copy; 2025 Member Auth System. All rights reserved.</p>
+            <p style="margin-top: 10px; font-size: 11px; opacity: 0.7;">此郵件由系統自動發送，請勿直接回覆。</p>
         </div>
     </div>
 </body>
