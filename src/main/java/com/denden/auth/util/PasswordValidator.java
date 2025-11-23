@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 /**
  * 密碼驗證工具
  */
-public class PasswordValidator {
+public final class PasswordValidator {
 
     private static final int MIN_LENGTH = 8;
     private static final int MAX_LENGTH = 100;

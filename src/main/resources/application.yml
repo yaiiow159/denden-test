@@ -68,7 +68,7 @@ spring:
 app:
   security:
     jwt:
-      secret: ${JWT_SECRET:your-secret-key-change-this-in-production-min-256-bits}
+      secret: ${JWT_SECRET:bX$9uE4Q!pZ7rJm3%Wk82@AfNqG5tLxR^D1sV#yC0hM8zK!vP6wTqN*eS4bU9oH3}
       expiration-ms: ${JWT_EXPIRATION_MS:86400000}
       issuer: member-auth-system
     rate-limit:
@@ -85,11 +85,29 @@ app:
       lock-duration-minutes: 30
   
   mail:
+    provider: ${MAIL_PROVIDER:mailjet}
+    from-name: ${MAIL_FROM_NAME:Member Auth System}
     mailjet:
       api-key: ${MAILJET_API_KEY:}
       secret-key: ${MAILJET_SECRET_KEY:}
       from-email: ${MAILJET_FROM_EMAIL:noreply@example.com}
       from-name: ${MAILJET_FROM_NAME:Member Auth System}
+
+# JavaMail 配置（當 app.mail.provider=javamail 時使用）
+spring:
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
   
   base-url: ${APP_BASE_URL:http://localhost:8080}
   cors:

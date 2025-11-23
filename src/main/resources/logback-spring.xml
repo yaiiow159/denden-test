@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <!-- 引入 Spring Boot 預設配置 -->
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     
-    <!-- 定義日誌輸出路徑 -->
     <property name="LOG_PATH" value="${LOG_PATH:-logs}"/>
     <property name="LOG_FILE" value="${LOG_FILE:-member-auth-system}"/>
     
-    <!-- 定義日誌格式 -->
     <property name="CONSOLE_LOG_PATTERN" 
               value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
     
@@ -33,7 +30,6 @@
     </springProfile>
     
     <springProfile name="prod">
-        <!-- 控制台輸出 (簡化格式) -->
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <encoder class="net.logstash.logback.encoder.LogstashEncoder">
                 <includeMdcKeyName>traceId</includeMdcKeyName>
@@ -45,7 +41,6 @@
             </encoder>
         </appender>
         
-        <!-- 一般日誌檔案 -->
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${LOG_PATH}/${LOG_FILE}.log</file>
             <encoder class="net.logstash.logback.encoder.LogstashEncoder">
@@ -64,7 +59,6 @@
             </rollingPolicy>
         </appender>
         
-        <!-- 錯誤日誌檔案 -->
         <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${LOG_PATH}/${LOG_FILE}-error.log</file>
             <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -96,7 +90,6 @@
         <logger name="org.springframework.security" level="WARN"/>
     </springProfile>
     
-    <!-- Test Profile: 僅控制台輸出 -->
     <springProfile name="test">
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>

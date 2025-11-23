@@ -70,7 +70,7 @@ public class LoggingFilter extends OncePerRequestFilter {
         String method = request.getMethod();
         String uri = request.getRequestURI();
         String queryString = request.getQueryString();
-        String clientIp = getClientIp(request);
+        String clientIp = request.getRemoteAddr();
 
         StringBuilder logMessage = new StringBuilder();
         logMessage.append("HTTP Request: ")
@@ -90,7 +90,6 @@ public class LoggingFilter extends OncePerRequestFilter {
 
         log.info(logMessage.toString());
 
-        // 記錄請求 body (僅 POST/PUT/PATCH)
         if (shouldLogBody(method)) {
             String body = getRequestBody(request);
             if (body != null && !body.isEmpty()) {
@@ -225,27 +224,6 @@ public class LoggingFilter extends OncePerRequestFilter {
         }
 
         return "***";
-    }
-
-    /**
-     * 取得客戶端真實 IP
-     */
-    private String getClientIp(HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
-        
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("X-Real-IP");
-        }
-        
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        
-        if (ip != null && ip.contains(",")) {
-            ip = ip.split(",")[0].trim();
-        }
-        
-        return ip;
     }
 
     /**

@@ -28,10 +28,6 @@ public interface LoginAttemptRepository extends JpaRepository<LoginAttempt, Long
 
     /**
      * 統計指定時間之後特定 Email 的登入嘗試次數
-     * <p>
-     * 用於帳號鎖定機制，統計最近時間範圍內的失敗次數
-     * 例如：統計最近 30 分鐘內的失敗次數
-     * </p>
      *
      * @param email 使用者 Email
      * @param after 起始時間（包含）
@@ -41,10 +37,6 @@ public interface LoginAttemptRepository extends JpaRepository<LoginAttempt, Long
 
     /**
      * 統計指定時間之後特定 Email 的失敗登入次數
-     * <p>
-     * 用於帳號鎖定機制的核心查詢
-     * 統計最近時間範圍內的失敗次數，達到閾值則鎖定帳號
-     * </p>
      *
      * @param email      使用者 Email
      * @param successful 是否成功（false 表示失敗）
@@ -55,10 +47,6 @@ public interface LoginAttemptRepository extends JpaRepository<LoginAttempt, Long
 
     /**
      * 查詢特定 Email 在指定時間範圍內的所有登入嘗試
-     * <p>
-     * 用於安全審計和異常行為分析
-     * 按時間倒序排列，最新的記錄在前
-     * </p>
      *
      * @param email 使用者 Email
      * @param after 起始時間（包含）
@@ -68,10 +56,6 @@ public interface LoginAttemptRepository extends JpaRepository<LoginAttempt, Long
 
     /**
      * 查詢特定 Email 的最近 N 次登入嘗試
-     * <p>
-     * 用於顯示使用者的登入歷史
-     * 使用原生查詢限制返回數量，提升效能
-     * </p>
      *
      * @param email 使用者 Email
      * @param limit 返回記錄數量
@@ -82,10 +66,6 @@ public interface LoginAttemptRepository extends JpaRepository<LoginAttempt, Long
 
     /**
      * 查詢特定 IP 地址在指定時間範圍內的登入嘗試
-     * <p>
-     * 用於偵測分散式攻擊
-     * 例如：同一 IP 短時間內嘗試多個不同帳號
-     * </p>
      *
      * @param ipAddress IP 地址
      * @param after     起始時間（包含）
@@ -95,10 +75,6 @@ public interface LoginAttemptRepository extends JpaRepository<LoginAttempt, Long
 
     /**
      * 統計特定 IP 地址在指定時間範圍內的失敗次數
-     * <p>
-     * 用於 IP 級別的限流和封鎖
-     * 例如：同一 IP 短時間內失敗次數過多則暫時封鎖
-     * </p>
      *
      * @param ipAddress  IP 地址
      * @param successful 是否成功（false 表示失敗）
@@ -109,11 +85,6 @@ public interface LoginAttemptRepository extends JpaRepository<LoginAttempt, Long
 
     /**
      * 刪除指定時間之前的登入嘗試記錄
-     * <p>
-     * 用於定期清理舊記錄，避免資料表過大
-     * 保留 90 天內的記錄用於安全審計
-     * 使用排程任務定期執行（例如每週一次）
-     * </p>
      *
      * @param before 截止時間（早於此時間的記錄將被刪除）
      * @return 刪除的記錄數量
@@ -124,10 +95,7 @@ public interface LoginAttemptRepository extends JpaRepository<LoginAttempt, Long
 
     /**
      * 統計指定時間範圍內的總登入嘗試次數
-     * <p>
-     * 用於系統監控和統計
-     * </p>
-     *
+     * 
      * @param after 起始時間（包含）
      * @return 總登入嘗試次數
      */
@@ -135,9 +103,6 @@ public interface LoginAttemptRepository extends JpaRepository<LoginAttempt, Long
 
     /**
      * 統計指定時間範圍內的成功登入次數
-     * <p>
-     * 用於系統監控和統計
-     * </p>
      *
      * @param successful 是否成功
      * @param after      起始時間（包含）

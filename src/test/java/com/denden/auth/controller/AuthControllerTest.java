@@ -86,14 +86,12 @@ class AuthControllerTest {
     void testRegisterWeakPassword() throws Exception {
         RegisterRequest request = new RegisterRequest("test@example.com", "weak");
         
-        // 密碼驗證在 Bean Validation 層面就會失敗，返回 VALIDATION_ERROR (9002)
         mockMvc.perform(post("/api/v1/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ErrorCode.VALIDATION_ERROR.getCode()));
         
-        // 因為在 Bean Validation 層面就失敗了，所以不會調用 authService
         verify(authService, times(0)).register(any(RegisterRequest.class));
     }
 
@@ -120,7 +118,6 @@ class AuthControllerTest {
         doThrow(new BusinessException(ErrorCode.INVALID_TOKEN))
                 .when(authService).verifyEmail(token);
         
-        // INVALID_TOKEN (3001) 屬於 3000-3999 範圍，映射到 UNAUTHORIZED (401)
         mockMvc.perform(get("/api/v1/auth/verify-email")
                         .param("token", token))
                 .andExpect(status().isUnauthorized())
@@ -205,7 +202,6 @@ class AuthControllerTest {
         when(authService.login(any(LoginRequest.class), anyString()))
                 .thenThrow(new BusinessException(ErrorCode.ACCOUNT_NOT_ACTIVATED));
         
-        // ACCOUNT_NOT_ACTIVATED (1002) 屬於 1000-1999 範圍，映射到 UNAUTHORIZED (401)
         mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -223,7 +219,6 @@ class AuthControllerTest {
         when(authService.login(any(LoginRequest.class), anyString()))
                 .thenThrow(new BusinessException(ErrorCode.ACCOUNT_LOCKED));
         
-        // ACCOUNT_LOCKED (1003) 屬於 1000-1999 範圍，映射到 UNAUTHORIZED (401)
         mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -260,14 +255,12 @@ class AuthControllerTest {
     void testVerifyOtpInvalidOtp() throws Exception {
         VerifyOtpRequest request = new VerifyOtpRequest("session-123", "wrong-otp");
         
-        // OTP 格式驗證在 Bean Validation 層面就會失敗，返回 VALIDATION_ERROR (9002)
         mockMvc.perform(post("/api/v1/auth/verify-otp")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(ErrorCode.VALIDATION_ERROR.getCode()));
         
-        // 因為在 Bean Validation 層面就失敗了，所以不會調用 authService
         verify(authService, times(0)).verifyOtp(any(VerifyOtpRequest.class));
     }
 
@@ -279,7 +272,6 @@ class AuthControllerTest {
         when(authService.verifyOtp(any(VerifyOtpRequest.class)))
                 .thenThrow(new BusinessException(ErrorCode.OTP_SESSION_NOT_FOUND));
         
-        // OTP_SESSION_NOT_FOUND (1006) 屬於 1000-1999 範圍，映射到 UNAUTHORIZED (401)
         mockMvc.perform(post("/api/v1/auth/verify-otp")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -314,7 +306,6 @@ class AuthControllerTest {
         when(authService.resendOtp(sessionId))
                 .thenThrow(new BusinessException(ErrorCode.OTP_SESSION_NOT_FOUND));
         
-        // OTP_SESSION_NOT_FOUND (1006) 屬於 1000-1999 範圍，映射到 UNAUTHORIZED (401)
         mockMvc.perform(post("/api/v1/auth/resend-otp")
                         .param("sessionId", sessionId))
                 .andExpect(status().isUnauthorized())

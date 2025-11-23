@@ -4,6 +4,7 @@ import com.mailjet.client.ClientOptions;
 import com.mailjet.client.MailjetClient;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ import jakarta.validation.constraints.NotBlank;
 
 /**
  * Mailjet 郵件服務配置
+ * 
  */
 @Configuration
 @ConfigurationProperties(prefix = "app.mail.mailjet")
@@ -36,6 +38,11 @@ public class MailjetConfig {
     private String fromName;
     
     @Bean
+    @ConditionalOnProperty(
+        name = "app.mail.provider", 
+        havingValue = "mailjet", 
+        matchIfMissing = true
+    )
     public MailjetClient mailjetClient() {
         ClientOptions options = ClientOptions.builder()
                 .apiKey(apiKey)
