@@ -222,7 +222,7 @@ app:
       expiration-ms: ${JWT_EXPIRATION_MS:86400000}
       issuer: member-auth-system
     rate-limit:
-      max-requests: 10
+      max-requests: 50
       window-seconds: 60
     otp:
       length: 6

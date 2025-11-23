@@ -55,14 +55,14 @@ public class OpenApiConfig {
      */
     private Info apiInfo() {
         return new Info()
-                .title("Member Authentication System API")
+                .title("DenDen two factories login System API")
                 .version("1.0.0")
                 .description("""
-                        # 會員認證系統 API 文件
+                        # DenDen API 文件
                         """)
                 .contact(new Contact()
-                        .name("API Support Team")
-                        .email("support@denden.com")
+                        .name("Timmy")
+                        .email("examyou076@gmail.com")
                         .url("https://github.com/denden/member-auth-system"))
                 .license(new License()
                         .name("MIT License")
