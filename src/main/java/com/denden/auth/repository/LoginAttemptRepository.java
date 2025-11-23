@@ -13,13 +13,6 @@ import java.util.List;
 /**
  * 登入嘗試記錄資料存取介面
  *
- * <p>主要功能：</p>
- * <ul>
- *   <li>統計時間範圍內的失敗次數（帳號鎖定機制）</li>
- *   <li>查詢特定 Email 的登入歷史（安全審計）</li>
- *   <li>清理舊的登入記錄（定期維護）</li>
- * </ul>
- *
  * @author Member Auth System
  * @since 1.0.0
  */

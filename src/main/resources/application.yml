@@ -93,7 +93,6 @@ app:
       from-email: ${MAILJET_FROM_EMAIL:noreply@example.com}
       from-name: ${MAILJET_FROM_NAME:Member Auth System}
 
-# JavaMail 配置（當 app.mail.provider=javamail 時使用）
 spring:
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}
@@ -112,6 +111,12 @@ spring:
   base-url: ${APP_BASE_URL:http://localhost:8080}
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
+  
+  cleanup:
+    enabled: ${CLEANUP_ENABLED:true}
+    login-history-retention-days: ${LOGIN_HISTORY_RETENTION_DAYS:90}
+    login-history-cron: ${LOGIN_HISTORY_CLEANUP_CRON:0 0 2 * * ?}
+
 
 springdoc:
   api-docs:

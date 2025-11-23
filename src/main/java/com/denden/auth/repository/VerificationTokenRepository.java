@@ -16,13 +16,6 @@ import java.util.Optional;
 /**
  * 驗證 Token 資料存取介面
  *
- * <p>主要功能：</p>
- * <ul>
- *   <li>根據 Token 字串查詢（Email 驗證、密碼重設）</li>
- *   <li>根據使用者和類型查詢（重新發送驗證郵件）</li>
- *   <li>清理過期 Token（定期維護）</li>
- * </ul>
- *
  * @author Member Auth System
  * @since 1.0.0
  */
@@ -31,10 +24,7 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
 
     /**
      * 根據 Token 字串查詢驗證 Token
-     * <p>
-     * 用於 Email 驗證和密碼重設流程
-     * </p>
-     *
+     * 
      * @param token Token 字串（UUID）
      * @return Optional 包裝的驗證 Token，如果不存在則為 empty
      */
@@ -42,10 +32,6 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
 
     /**
      * 根據使用者和 Token 類型查詢驗證 Token
-     * <p>
-     * 用於重新發送驗證郵件時，查詢使用者現有的 Token
-     * 可能返回多個 Token（例如使用者多次請求重發）
-     * </p>
      *
      * @param user 使用者實體
      * @param type Token 類型
@@ -55,10 +41,6 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
 
     /**
      * 根據使用者、類型和未使用狀態查詢驗證 Token
-     * <p>
-     * 用於查詢使用者尚未使用的特定類型 Token
-     * 例如：檢查是否有未使用的 Email 驗證 Token
-     * </p>
      *
      * @param user 使用者實體
      * @param type Token 類型
@@ -93,9 +75,6 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
 
     /**
      * 刪除已使用且建立時間超過指定天數的 Token
-     * <p>
-     * 用於清理舊的已使用 Token，保留一定時間的歷史記錄
-     * </p>
      *
      * @param cutoffDate 截止日期（早於此日期的記錄將被刪除）
      * @return 刪除的記錄數量
@@ -106,13 +85,6 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
 
     /**
      * 統計特定類型的有效 Token 數量
-     * <p>
-     * 用於監控和統計，例如：
-     * <ul>
-     *   <li>統計待驗證的 Email 數量</li>
-     *   <li>統計待重設的密碼數量</li>
-     * </ul>
-     * </p>
      *
      * @param type Token 類型
      * @param now  當前時間

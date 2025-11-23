@@ -16,8 +16,6 @@ import java.util.Properties;
 /**
  * JavaMail 郵件服務配置
  * 
- * 支援任何 SMTP 服務器（Gmail, Outlook, 自建等）
- * 
  * @author Member Auth System
  * @since 1.0.0
  */

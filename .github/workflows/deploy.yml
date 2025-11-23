@@ -77,8 +77,8 @@ jobs:
           script: |
             cd /opt/member-auth
             
-            # 登入 GHCR
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+            # 登入 GHCR（使用 PAT 更穩定）
+            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
             
             # 設置環境變數
             export GITHUB_REPOSITORY="${{ github.repository }}"

@@ -1,7 +1,6 @@
 package com.denden.auth.util;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.experimental.UtilityClass;
 
 /**
  * HTTP 請求工具類

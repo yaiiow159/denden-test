@@ -1,7 +1,5 @@
 package com.denden.auth.util;
 
-import lombok.experimental.UtilityClass;
-
 /**
  * 資料遮罩工具類
  * 
