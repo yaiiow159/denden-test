@@ -88,30 +88,88 @@ jobs:
           script: |
             cd /opt/member-auth
             
-            # 確保 .env 文件存在（如果不存在則從 .env.example 複製）
+            echo "=========================================="
+            echo "Starting Deployment Process"
+            echo "=========================================="
+            
+            # 確保 .env 文件存在
             if [ ! -f .env ]; then
               echo "Creating .env from .env.example..."
               cp .env.example .env
               echo "Please update .env with actual values!"
             fi
             
+            # 確保日誌目錄存在且權限正確（自動修復權限問題）
+            echo "Preparing log directories..."
+            sudo mkdir -p /var/lib/member-auth/logs
+            sudo chown -R $(id -u):$(id -g) /var/lib/member-auth/logs
+            sudo chmod 755 /var/lib/member-auth/logs
+            echo "Log directory ready: /var/lib/member-auth/logs"
+            
+            # 停止舊容器
+            echo "Stopping old containers..."
+            docker-compose -f docker-compose.yml -f docker-compose.prod.yml down || true
+            
+            # 清理舊映像（確保使用最新映像）
+            echo "Cleaning old images..."
+            docker rmi ghcr.io/${{ github.repository }}:latest 2>/dev/null || echo "No old latest image to remove"
+            docker rmi ghcr.io/${{ github.repository }}:${{ github.sha }} 2>/dev/null || echo "No old SHA image to remove"
+            
             # 登入 GHCR
+            echo "Logging in to GHCR..."
             echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
             
             # 設置環境變數
             export GITHUB_REPOSITORY="${{ github.repository }}"
             
-            # 拉取並重啟
+            # 拉取最新映像
+            echo "Pulling latest images..."
             docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull
+            
+            # 啟動新容器
+            echo "Starting containers..."
             docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
             
-            # 清理舊映像
-            docker image prune -af
+            # 等待容器啟動
+            echo "Waiting for containers to start..."
+            sleep 15
             
-            echo "✅ Deployment completed!"
+            # 檢查容器狀態
+            echo "Container status:"
+            docker-compose ps
+            
+            # 檢查是否有權限錯誤
+            echo "Checking for permission errors..."
+            if docker-compose logs app | grep -q "Permission denied"; then
+              echo "Warning: Permission errors detected in logs"
+            else
+              echo "No permission errors found"
+            fi
+            
+            # 清理未使用的映像和容器
+            echo "Cleaning up unused resources..."
+            docker image prune -af
+            docker container prune -f
+            
+            echo "=========================================="
+            echo " Deployment completed successfully!"
+            echo "=========================================="
       
       - name: Health check
         run: |
+          echo "Starting health check..."
           sleep 30
-          curl -f http://${{ secrets.SERVER_HOST }}:8080/actuator/health || exit 1
-          echo " Health check passed!"
+          
+          # 重試機制（最多 3 次）
+          for i in {1..3}; do
+            echo "Attempt $i/5..."
+            if curl -f http://${{ secrets.SERVER_HOST }}:8080/actuator/health; then
+              echo "Health check passed!"
+              exit 0
+            fi
+            echo "Waiting 10 seconds before retry..."
+            sleep 10
+          done
+          
+          echo "Health check failed after 5 attempts"
+          exit 1

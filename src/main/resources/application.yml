@@ -99,7 +99,7 @@ app:
       lock-duration-minutes: 30
   
   mail:
-    provider: ${MAIL_PROVIDER:mailjet}
+    provider: ${MAIL_PROVIDER:javamail}
     from-name: ${MAIL_FROM_NAME:Member Auth System}
     mailjet:
       api-key: ${MAILJET_API_KEY:}

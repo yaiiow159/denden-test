@@ -74,11 +74,18 @@ REDIS_PASSWORD=CHANGE_ME_REDIS_PASSWORD
 JWT_SECRET=CHANGE_ME_JWT_SECRET_MIN_256_BITS
 JWT_EXPIRATION_MS=86400000
 
-# Email Configuration (Mailjet)
-MAILJET_API_KEY=your_mailjet_api_key
-MAILJET_SECRET_KEY=your_mailjet_secret_key
-MAILJET_FROM_EMAIL=noreply@yourdomain.com
-MAILJET_FROM_NAME=Member Auth System
+# Email Configuration (預設使用 JavaMail)
+MAIL_PROVIDER=javamail
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=your-email@gmail.com
+MAIL_PASSWORD=your-app-password
+MAIL_FROM_NAME=Member Auth System
+
+# Mailjet Configuration (可選，當 MAIL_PROVIDER=mailjet 時使用)
+# MAILJET_API_KEY=your_mailjet_api_key
+# MAILJET_SECRET_KEY=your_mailjet_secret_key
+# MAILJET_FROM_EMAIL=noreply@yourdomain.com
 
 # Application Configuration
 APP_BASE_URL=https://yourdomain.com

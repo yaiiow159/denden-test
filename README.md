@@ -19,7 +19,7 @@
 - **Security**: Spring Security 6.x + JWT
 - **Database**: PostgreSQL 15+
 - **Cache**: Redis 7+
-- **Email**: Mailjet API / JavaMail (可切換)
+- **Email**: JavaMail (預設) / Mailjet (可切換)
 - **Build**: Maven
 
 ### 前置需求
@@ -28,7 +28,7 @@
 - Maven 3.8+
 - PostgreSQL 15+
 - Redis 7+
-- Mailjet 帳號
+- SMTP 郵件服務（Gmail / Outlook 等）或 Mailjet 帳號
 
 ### 主要端點
 
