@@ -215,6 +215,56 @@ spring:
           min-idle: 4
           max-wait: -1ms
 
+app:
+  security:
+    jwt:
+      secret: ${JWT_SECRET}
+      expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+      issuer: member-auth-system
+    rate-limit:
+      max-requests: 10
+      window-seconds: 60
+    otp:
+      length: 6
+      expiration-seconds: 300
+      max-attempts: 3
+    verification-token:
+      expiration-hours: 24
+    account-lock:
+      max-failed-attempts: 5
+      lock-duration-minutes: 30
+  
+  mail:
+    provider: ${MAIL_PROVIDER:javamail}
+    from-name: ${MAIL_FROM_NAME:Member Auth System}
+    mailjet:
+      api-key: ${MAILJET_API_KEY:}
+      secret-key: ${MAILJET_SECRET_KEY:}
+      from-email: ${MAILJET_FROM_EMAIL:noreply@example.com}
+      from-name: ${MAILJET_FROM_NAME:Member Auth System}
+    javamail:
+      host: ${MAIL_HOST}
+      port: ${MAIL_PORT}
+      username: ${MAIL_USERNAME}
+      password: ${MAIL_PASSWORD}
+      protocol: smtp
+      properties:
+        mail:
+          smtp:
+            auth: true
+            starttls:
+              enable: true
+              required: true
+  
+  base-url: ${APP_BASE_URL}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS}
+  
+  cleanup:
+    enabled: ${CLEANUP_ENABLED:true}
+    login-history-retention-days: ${LOGIN_HISTORY_RETENTION_DAYS:90}
+    login-history-cron: ${LOGIN_HISTORY_CLEANUP_CRON:0 0 2 * * ?}
+
 logging:
   level:
     root: WARN

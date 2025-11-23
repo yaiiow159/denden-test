@@ -1,14 +1,12 @@
 # Member Authentication System (會員認證系統)
 
-安全的會員認證系統，提供註冊、雙因素認證登入與帳號查詢功能。
+提供註冊、雙因素認證登入與帳號查詢功能。
 
 ## 功能特性
 
 - 會員註冊與 Email 驗證
 - 雙因素認證登入 (密碼 + Email OTP)
 - JWT Token 認證
-- 帳號鎖定機制 (防暴力破解)
-- Rate Limiting (API 限流)
 - **動態郵件渠道切換** (Mailjet / JavaMail)
 - **自動資料清理** (定時清理 Redis 和資料庫舊資料)
 - Swagger API 文件
