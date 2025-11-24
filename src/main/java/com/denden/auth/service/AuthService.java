@@ -9,7 +9,7 @@ import com.denden.auth.dto.VerifyOtpRequest;
 /**
  * 認證服務介面
  * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 public interface AuthService {
@@ -43,7 +43,7 @@ public interface AuthService {
      * 
      * @param request 登入請求，包含 Email 與密碼
      * @param ipAddress 客戶端 IP 地址
-     * @return OTP 響應，包含 sessionId 用於第二階段驗證
+     * @return OTP 響應，包含遮罩後的 Email 和有效期限
      * @throws BusinessException 當登入失敗時拋出
      */
     OtpResponse login(LoginRequest request, String ipAddress);
@@ -51,7 +51,8 @@ public interface AuthService {
     /**
      * 會員登入 - 第二階段 OTP 驗證
      * 
-     * @param request OTP 驗證請求，包含 sessionId 與 OTP
+     * 
+     * @param request OTP 驗證請求，包含 email 與 OTP
      * @return 認證響應，包含 JWT Token 與使用者資訊
      * @throws BusinessException 當 OTP 驗證失敗時拋出
      */
@@ -59,10 +60,10 @@ public interface AuthService {
     
     /**
      * 重新發送 OTP
-     * 
-     * @param sessionId OTP 會話 ID
-     * @return OTP 響應，包含新的 sessionId
-     * @throws BusinessException 當 sessionId 無效時拋出
+     *     
+     * @param email 使用者 Email
+     * @return OTP 響應，包含遮罩後的 Email 和有效期限
+     * @throws BusinessException 當 email 無效或無活躍會話時拋出
      */
-    OtpResponse resendOtp(String sessionId);
+    OtpResponse resendOtp(String email);
 }

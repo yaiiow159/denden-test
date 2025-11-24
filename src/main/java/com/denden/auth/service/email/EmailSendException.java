@@ -5,7 +5,7 @@ package com.denden.auth.service.email;
  * 
  * <p>當郵件發送過程中發生錯誤時拋出此異常。
  * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 public class EmailSendException extends Exception {

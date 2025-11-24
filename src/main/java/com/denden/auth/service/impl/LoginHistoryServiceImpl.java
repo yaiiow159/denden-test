@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * 登入歷史服務實作
  * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 @Slf4j

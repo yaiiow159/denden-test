@@ -28,6 +28,20 @@ spring:
       connection-test-query: SELECT 1
       leak-detection-threshold: 60000
   
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+  
   jpa:
     hibernate:
       ddl-auto: validate
@@ -51,19 +65,6 @@ spring:
     baseline-on-migrate: true
     locations: classpath:db/migration
     validate-on-migrate: true
-  
-  data:
-    redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD:}
-      timeout: 2000ms
-      lettuce:
-        pool:
-          max-active: 8
-          max-idle: 8
-          min-idle: 2
-          max-wait: -1ms
   
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}
@@ -100,12 +101,12 @@ app:
   
   mail:
     provider: ${MAIL_PROVIDER:javamail}
-    from-name: ${MAIL_FROM_NAME:Member Auth System}
+    from-name: ${MAIL_FROM_NAME:DenDen}
     mailjet:
       api-key: ${MAILJET_API_KEY:}
       secret-key: ${MAILJET_SECRET_KEY:}
       from-email: ${MAILJET_FROM_EMAIL:noreply@example.com}
-      from-name: ${MAILJET_FROM_NAME:Member Auth System}
+      from-name: ${MAILJET_FROM_NAME:DenDen}
     javamail:
       host: ${MAIL_HOST:smtp.gmail.com}
       port: ${MAIL_PORT:587}
@@ -126,8 +127,14 @@ app:
   
   cleanup:
     enabled: ${CLEANUP_ENABLED:true}
+    batch-size: ${CLEANUP_BATCH_SIZE:1000}
     login-history-retention-days: ${LOGIN_HISTORY_RETENTION_DAYS:90}
     login-history-cron: ${LOGIN_HISTORY_CLEANUP_CRON:0 0 2 * * ?}
+    token-retention-days: ${TOKEN_RETENTION_DAYS:30}
+    token-cron: ${TOKEN_CLEANUP_CRON:0 0 3 * * ?}
+    used-token-cron: ${USED_TOKEN_CLEANUP_CRON:0 0 4 * * SUN}
+    login-attempt-retention-days: ${LOGIN_ATTEMPT_RETENTION_DAYS:30}
+    login-attempt-cron: ${LOGIN_ATTEMPT_CLEANUP_CRON:0 30 3 * * ?}
 
 
 springdoc:
@@ -236,12 +243,12 @@ app:
   
   mail:
     provider: ${MAIL_PROVIDER:javamail}
-    from-name: ${MAIL_FROM_NAME:Member Auth System}
+    from-name: ${MAIL_FROM_NAME:DenDen}
     mailjet:
       api-key: ${MAILJET_API_KEY:}
       secret-key: ${MAILJET_SECRET_KEY:}
       from-email: ${MAILJET_FROM_EMAIL:noreply@example.com}
-      from-name: ${MAILJET_FROM_NAME:Member Auth System}
+      from-name: ${MAILJET_FROM_NAME:DenDen}
     javamail:
       host: ${MAIL_HOST}
       port: ${MAIL_PORT}

@@ -7,7 +7,7 @@ import java.time.ZoneId;
 /**
  * 時間工具類
  * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 public final class TimeUtils {
@@ -17,12 +17,12 @@ public final class TimeUtils {
     }
     
     /**
-     * 將 LocalDateTime 轉換為 Unix timestamp (毫秒)
+     * 將 LocalDateTime 轉換為 timestamp (毫秒)
      * 
      * <p>使用系統預設時區進行轉換
      * 
      * @param dateTime 要轉換的 LocalDateTime
-     * @return Unix timestamp (毫秒)
+     * @return timestamp (毫秒)
      * @throws NullPointerException 當 dateTime 為 null 時
      */
     public static long toTimestamp(LocalDateTime dateTime) {
@@ -48,7 +48,7 @@ public final class TimeUtils {
      * 
      * <p>使用系統預設時區進行轉換
      * 
-     * @param timestamp Unix timestamp (毫秒)
+     * @param timestamp timestamp (毫秒)
      * @return LocalDateTime
      */
     public static LocalDateTime fromTimestamp(long timestamp) {
@@ -59,9 +59,9 @@ public final class TimeUtils {
     }
     
     /**
-     * 將 Unix timestamp (毫秒) 轉換為 LocalDateTime，接受 double 類型
+     * 將 timestamp (毫秒) 轉換為 LocalDateTime，接受 double 類型
      * 
-     * @param timestamp Unix timestamp (毫秒) as double
+     * @param timestamp timestamp (毫秒) as double
      * @return LocalDateTime
      */
     public static LocalDateTime fromTimestamp(double timestamp) {
@@ -69,10 +69,10 @@ public final class TimeUtils {
     }
     
     /**
-     * 將 LocalDateTime 轉換為 Unix timestamp (秒)
+     * 將 LocalDateTime 轉換為 timestamp (秒)
      * 
      * @param dateTime 要轉換的 LocalDateTime
-     * @return Unix timestamp (秒)
+     * @return  timestamp (秒)
      * @throws NullPointerException 當 dateTime 為 null 時
      */
     public static long toTimestampSeconds(LocalDateTime dateTime) {
@@ -83,9 +83,9 @@ public final class TimeUtils {
     }
     
     /**
-     * 將 Unix timestamp (秒) 轉換為 LocalDateTime
+     * 將 timestamp (秒) 轉換為 LocalDateTime
      * 
-     * @param timestampSeconds Unix timestamp (秒)
+     * @param timestampSeconds timestamp (秒)
      * @return LocalDateTime
      */
     public static LocalDateTime fromTimestampSeconds(long timestampSeconds) {

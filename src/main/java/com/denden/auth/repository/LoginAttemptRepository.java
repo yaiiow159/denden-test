@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * 登入嘗試記錄資料存取介面
  *
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 @Repository
@@ -102,4 +102,18 @@ public interface LoginAttemptRepository extends JpaRepository<LoginAttempt, Long
      * @return 成功登入次數
      */
     long countBySuccessfulAndAttemptedAtAfter(boolean successful, LocalDateTime after);
+    
+    /**
+     * 批次刪除舊的登入嘗試記錄
+     * <p>
+     * 使用 LIMIT 限制每次刪除的數量，避免長時間鎖表
+     * </p>
+     *
+     * @param before 截止時間
+     * @param limit 每次刪除的最大數量
+     * @return 刪除的記錄數量
+     */
+    @Modifying
+    @Query(value = "DELETE FROM login_attempts WHERE attempted_at < :before LIMIT :limit", nativeQuery = true)
+    int deleteOldAttemptsInBatch(@Param("before") LocalDateTime before, @Param("limit") int limit);
 }

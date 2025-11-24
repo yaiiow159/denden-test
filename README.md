@@ -261,7 +261,7 @@ MAIL_PROVIDER=mailjet
 MAILJET_API_KEY=your_api_key
 MAILJET_SECRET_KEY=your_secret_key
 MAILJET_FROM_EMAIL=noreply@yourdomain.com
-MAILJET_FROM_NAME=Member Auth System
+MAILJET_FROM_NAME=DenDen
 ```
 
 #### JavaMail (Gmail)

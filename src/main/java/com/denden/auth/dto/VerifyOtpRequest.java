@@ -1,24 +1,28 @@
 package com.denden.auth.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 /**
  * OTP 驗證請求 DTO
  * 
- * @param sessionId OTP 會話 ID
+ * <p>注意：使用 email
+ * 
+ * @param email 使用者 Email
  * @param otp 6 位數字 OTP 驗證碼
  */
 @Schema(description = "OTP 驗證請求（第二階段 OTP 驗證）")
 public record VerifyOtpRequest(
     @Schema(
-        description = "OTP 會話 ID（從登入 API 返回）",
-        example = "550e8400-e29b-41d4-a716-446655440000",
+        description = "使用者 Email（登入時使用的 Email）",
+        example = "user@example.com",
         requiredMode = Schema.RequiredMode.REQUIRED
     )
-    @NotBlank(message = "Session ID 不能為空")
-    String sessionId,
+    @NotBlank(message = "Email 不能為空")
+    @Email(message = "Email 格式不正確")
+    String email,
     
     @Schema(
         description = "6 位數字 OTP 驗證碼（從 Email 取得）",

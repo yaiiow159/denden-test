@@ -7,7 +7,7 @@ import org.springframework.retry.annotation.EnableRetry;
 /**
  * 重試機制配置
  *  
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 @Configuration

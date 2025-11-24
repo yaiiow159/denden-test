@@ -16,10 +16,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * Mailjet 郵件發送實現
- * 
- * <p>使用 Mailjet API 發送郵件的策略實現。
- * 
- * @author Member Auth System
+ *  
+ * @author Timmy
  * @since 1.0.0
  */
 @Component

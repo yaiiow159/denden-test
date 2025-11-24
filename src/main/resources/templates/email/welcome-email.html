@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>歡迎加入</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header::before {
+            content: '🎉';
+            font-size: 64px;
+            display: block;
+            margin-bottom: 15px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 700;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .content p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        .feature-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 25px 0;
+        }
+        .feature-box h3 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            color: #333;
+        }
+        .feature-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .feature-box li {
+            font-size: 15px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .footer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+        .footer p {
+            margin: 8px 0;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        @media only screen and (max-width: 600px) {
+            .container {
+                border-radius: 0;
+                margin: 0;
+            }
+            body {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>歡迎加入 DenDen！</h1>
+        </div>
+        
+        <div class="content">
+            <p style="font-size: 18px; font-weight: 500;">親愛的 {{USERNAME}}，您好！</p>
+            
+            <p>恭喜您成功註冊 <strong style="color: #667eea;">DenDen</strong>！我們很高興您加入我們的社群。</p>
+            
+            <p>您的帳號已經啟用，現在可以開始使用我們提供的所有功能了！</p>
+            
+            <div class="feature-box">
+                <h3>🚀 您可以做什麼</h3>
+                <ul>
+                    <li>使用雙因素認證保護您的帳號安全</li>
+                    <li>查看您的登入歷史記錄</li>
+                    <li>管理您的個人資料</li>
+                    <li>享受安全可靠的認證服務</li>
+                </ul>
+            </div>
+            
+            <div class="feature-box">
+                <h3>安全提示</h3>
+                <ul>
+                    <li>請妥善保管您的密碼，不要與他人分享</li>
+                    <li>定期更換密碼可以提高帳號安全性</li>
+                    <li>如發現異常登入活動，請立即聯繫我們</li>
+                </ul>
+            </div>
+            
+            <p style="margin-top: 30px; font-size: 14px; color: #666;">
+                如果您有任何問題或需要協助，歡迎隨時聯繫我們的客服團隊。
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p style="font-size: 14px;">感謝您選擇 DenDen</p>
+            <p style="margin-top: 20px; font-size: 12px; opacity: 0.8;">&copy; 2025 DenDen. All rights reserved.</p>
+            <p style="margin-top: 10px; font-size: 11px; opacity: 0.7;">此郵件由系統自動發送，請勿直接回覆。</p>
+        </div>
+    </div>
+</body>
+</html>

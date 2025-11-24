@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * 
  * <p>提供使用者資訊查詢相關功能</p>
  * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 public interface UserService {
@@ -17,12 +17,7 @@ public interface UserService {
     /**
      * 取得當前使用者資訊
      * 
-     * <p>根據使用者 Email 查詢使用者的基本資訊，包含：
-     * <ul>
-     *   <li>使用者 ID</li>
-     *   <li>Email 地址</li>
-     *   <li>最後登入時間</li>
-     * </ul>
+     * <p>根據使用者 Email 查詢使用者的基本資訊</p>
      * 
      * @param email 使用者 Email 地址
      * @return UserInfo 使用者資訊 DTO

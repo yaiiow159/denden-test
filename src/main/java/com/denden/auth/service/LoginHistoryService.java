@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * 登入歷史服務介面
  * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 public interface LoginHistoryService {

@@ -2,10 +2,8 @@ package com.denden.auth.service.email;
 
 /**
  * 郵件發送策略介面
- * 
- * 採用策略模式設計，允許切換不同的郵件發送渠道。
- * 
- * @author Member Auth System
+ *  
+ * @author Timmy
  * @since 1.0.0
  */
 public interface EmailSender {

@@ -6,7 +6,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 /**
  * 定時任務配置
  * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 @Configuration

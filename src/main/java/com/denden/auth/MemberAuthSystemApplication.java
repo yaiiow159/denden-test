@@ -5,11 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
- * Member Authentication System - Main Application
+ * DenDen System - Main Application
  * 
  * 會員認證系統主應用程式
  *  * 
- * @author Denden Team
+ * @author Timmy
  * @version 1.0.0
  */
 @SpringBootApplication

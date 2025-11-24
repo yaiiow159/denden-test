@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * Rate Limiting 過濾器
  * 
- * <p>預設限制：每個 IP 每分鐘最多 10 次請求
  * <p>超過限制時回傳 429 Too Many Requests
  */
 @Slf4j

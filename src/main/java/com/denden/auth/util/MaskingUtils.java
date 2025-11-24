@@ -3,7 +3,7 @@ package com.denden.auth.util;
 /**
  * 資料遮罩工具類
  * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 public final class MaskingUtils {
@@ -137,7 +137,6 @@ public final class MaskingUtils {
      * @param prefixLength 保留前綴長度
      * @param suffixLength 保留後綴長度
      * @return 遮罩後的值
-
      */
     public static String mask(String value, int prefixLength, int suffixLength) {
         if (value == null || value.isEmpty()) {

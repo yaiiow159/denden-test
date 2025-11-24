@@ -18,13 +18,7 @@ import java.time.LocalDateTime;
 /**
  * 使用者服務實作
  * 
- * <p>提供使用者資訊查詢功能，包含：
- * <ul>
- *   <li>查詢當前使用者資訊</li>
- *   <li>查詢最後登入時間</li>
- * </ul>
- * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 @Slf4j

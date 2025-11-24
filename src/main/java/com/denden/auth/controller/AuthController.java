@@ -158,7 +158,7 @@ public class AuthController {
     @PostMapping("/login")
     @Operation(
         summary = "會員登入 - 第一階段密碼驗證",
-        description = "驗證 Email 與密碼，成功後發送 OTP 至使用者 Email，返回 sessionId 用於第二階段驗證"
+        description = "驗證 Email 與密碼，成功後發送 OTP 至使用者 Email"
     )
     @ApiResponses(value = {
         @ApiResponse(
@@ -287,10 +287,10 @@ public class AuthController {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class))
         )
     })
-    public ResponseEntity<OtpResponse> resendOtp(@RequestParam("sessionId") String sessionId) {
+    public ResponseEntity<OtpResponse> resendOtp(@RequestParam("email") String email) {
         log.info("收到重新發送 OTP 請求");
         
-        OtpResponse response = authService.resendOtp(sessionId);
+        OtpResponse response = authService.resendOtp(email);
         
         log.info("重新發送 OTP 請求處理完成");
         return ResponseEntity.ok(response);

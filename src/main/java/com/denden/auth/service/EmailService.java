@@ -10,7 +10,7 @@ package com.denden.auth.service;
  *   <li>發送帳號鎖定通知郵件</li>
  * </ul>
  * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 public interface EmailService {
@@ -46,4 +46,15 @@ public interface EmailService {
      * @throws BusinessException 當郵件發送失敗時拋出
      */
     void sendAccountLockedEmail(String to);
+    
+    /**
+     * 發送歡迎郵件
+     * 
+     * <p>當使用者完成 Email 驗證後，發送歡迎郵件
+     * 
+     * @param to 收件者 Email 地址
+     * @param username 使用者名稱
+     * @throws BusinessException 當郵件發送失敗時拋出
+     */
+    void sendWelcomeEmail(String to, String username);
 }

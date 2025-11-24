@@ -3,9 +3,10 @@ package com.denden.auth.service.impl;
 import com.denden.auth.exception.BusinessException;
 import com.denden.auth.exception.ErrorCode;
 import com.denden.auth.service.EmailService;
+import com.denden.auth.service.EmailTemplateService;
 import com.denden.auth.service.email.EmailSendException;
 import com.denden.auth.service.email.EmailSenderFactory;
-import com.denden.auth.util.EmailTemplateLoader;
+
 import com.denden.auth.util.MaskingUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,15 +16,14 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
+
 
 /**
  * Email 發送服務實作
  * 
- * <p>採用策略模式設計，支援動態切換不同的郵件發送渠道。
  * 通過 EmailSenderFactory 獲取當前配置的發送器實現。
  * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 @Service
@@ -32,7 +32,7 @@ import java.util.Map;
 public class EmailServiceImpl implements EmailService {
     
     private final EmailSenderFactory emailSenderFactory;
-    private final EmailTemplateLoader templateLoader;
+    private final EmailTemplateService emailTemplateService;
     
     @Value("${app.base-url}")
     private String baseUrl;
@@ -50,8 +50,8 @@ public class EmailServiceImpl implements EmailService {
             emailSenderFactory.getActiveSender().getSenderType());
         
         String verificationLink = baseUrl + "/api/v1/auth/verify-email?token=" + token;
-        String subject = "驗證您的帳號 - Member Auth System";
-        String htmlContent = buildVerificationEmailHtml(verificationLink);
+        String subject = "驗證您的帳號 - DenDen";
+        String htmlContent = emailTemplateService.buildVerificationEmail(verificationLink);
         
         try {
             emailSenderFactory.getActiveSender().send(to, subject, htmlContent);
@@ -63,7 +63,7 @@ public class EmailServiceImpl implements EmailService {
     }
     
     @Override
-    @Async()
+    @Async
     @Retryable(
         retryFor = {EmailSendException.class},
         maxAttempts = 3,
@@ -74,8 +74,8 @@ public class EmailServiceImpl implements EmailService {
             MaskingUtils.maskEmail(to),
             emailSenderFactory.getActiveSender().getSenderType());
         
-        String subject = "您的登入驗證碼 - Member Auth System";
-        String htmlContent = buildOtpEmailHtml(otp);
+        String subject = "您的登入驗證碼 - DenDen";
+        String htmlContent = emailTemplateService.buildOtpEmail(otp);
         
         try {
             emailSenderFactory.getActiveSender().send(to, subject, htmlContent);
@@ -99,7 +99,7 @@ public class EmailServiceImpl implements EmailService {
             emailSenderFactory.getActiveSender().getSenderType());
         
         String subject = "帳號安全通知 - 帳號已被暫時鎖定";
-        String htmlContent = buildAccountLockedEmailHtml();
+        String htmlContent = emailTemplateService.buildAccountLockedEmail();
         
         try {
             emailSenderFactory.getActiveSender().send(to, subject, htmlContent);
@@ -110,21 +110,27 @@ public class EmailServiceImpl implements EmailService {
         }
     }
     
-    private String buildVerificationEmailHtml(String verificationLink) {
-        return templateLoader.loadTemplate(
-            "verification-email.html",
-            Map.of("VERIFICATION_LINK", verificationLink)
-        );
-    }
-    
-    private String buildOtpEmailHtml(String otp) {
-        return templateLoader.loadTemplate(
-            "otp-email.html",
-            Map.of("OTP_CODE", otp)
-        );
-    }
-    
-    private String buildAccountLockedEmailHtml() {
-        return templateLoader.loadTemplate("account-locked-email.html");
+    @Override
+    @Async
+    @Retryable(
+        retryFor = {EmailSendException.class},
+        maxAttempts = 3,
+        backoff = @Backoff(delay = 2000, multiplier = 2)
+    )
+    public void sendWelcomeEmail(String to, String username) {
+        log.info("準備發送歡迎郵件至: {} (使用: {})", 
+            MaskingUtils.maskEmail(to),
+            emailSenderFactory.getActiveSender().getSenderType());
+        
+        String subject = "歡迎加入 DenDen！";
+        String htmlContent = emailTemplateService.buildWelcomeEmail(username);
+        
+        try {
+            emailSenderFactory.getActiveSender().send(to, subject, htmlContent);
+            log.info("歡迎郵件發送成功至: {}", MaskingUtils.maskEmail(to));
+        } catch (EmailSendException e) {
+            log.error("歡迎郵件發送失敗至: {}, 錯誤: {}", MaskingUtils.maskEmail(to), e.getMessage(), e);
+            throw new BusinessException(ErrorCode.EMAIL_SERVICE_ERROR, "歡迎郵件發送失敗", e);
+        }
     }
 }

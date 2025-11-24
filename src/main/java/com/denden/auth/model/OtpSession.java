@@ -11,7 +11,7 @@ import java.io.Serializable;
  * OTP Session 資料模型
  * 用於在 Redis 中儲存 OTP 驗證會話資訊
  * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 @Data

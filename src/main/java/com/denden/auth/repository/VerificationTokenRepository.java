@@ -16,7 +16,7 @@ import java.util.Optional;
 /**
  * 驗證 Token 資料存取介面
  *
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 @Repository
@@ -51,9 +51,6 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
 
     /**
      * 根據使用者查詢所有驗證 Token
-     * <p>
-     * 用於管理功能，查看使用者的所有 Token 記錄
-     * </p>
      *
      * @param user 使用者實體
      * @return 該使用者的所有驗證 Token 列表
@@ -62,9 +59,6 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
 
     /**
      * 刪除過期的驗證 Token
-     * <p>
-     * 用於定期清理過期 Token，避免資料表過大
-     * </p>
      *
      * @param now 當前時間
      * @return 刪除的記錄數量
@@ -92,4 +86,26 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
      */
     @Query("SELECT COUNT(vt) FROM VerificationToken vt WHERE vt.type = :type AND vt.used = false AND vt.expiresAt > :now")
     long countValidTokensByType(@Param("type") TokenType type, @Param("now") LocalDateTime now);
+    
+    /**
+     * 批次刪除過期的驗證 Token
+     *
+     * @param now 當前時間
+     * @param limit 每次刪除的最大數量
+     * @return 刪除的記錄數量
+     */
+    @Modifying
+    @Query(value = "DELETE FROM verification_tokens WHERE expires_at < :now LIMIT :limit", nativeQuery = true)
+    int deleteExpiredTokensInBatch(@Param("now") LocalDateTime now, @Param("limit") int limit);
+    
+    /**
+     * 批次刪除已使用的舊 Token
+     *
+     * @param cutoffDate 截止日期
+     * @param limit 每次刪除的最大數量
+     * @return 刪除的記錄數量
+     */
+    @Modifying
+    @Query(value = "DELETE FROM verification_tokens WHERE used = true AND created_at < :cutoffDate LIMIT :limit", nativeQuery = true)
+    int deleteUsedTokensInBatch(@Param("cutoffDate") LocalDateTime cutoffDate, @Param("limit") int limit);
 }

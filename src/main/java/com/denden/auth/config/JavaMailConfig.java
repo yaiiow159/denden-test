@@ -16,7 +16,7 @@ import java.util.Properties;
 /**
  * JavaMail 郵件服務配置
  * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 @Configuration

@@ -24,14 +24,13 @@ import java.util.regex.Pattern;
  * 
  * <p>記錄所有 HTTP 請求和響應，並自動遮罩敏感資訊：
  * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 @Slf4j
 @Order(2)
 @Component
 public class LoggingFilter extends OncePerRequestFilter {
-
     private static final List<String> SENSITIVE_FIELDS = Arrays.asList(
             "password", "otp", "token", "secret", "authorization"
     );

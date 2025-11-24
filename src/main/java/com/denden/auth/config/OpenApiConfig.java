@@ -18,7 +18,7 @@ import java.util.List;
  * OpenAPI (Swagger) 配置類別
  * 提供 API 文件的基本資訊、安全配置和伺服器設定
  *
- * @author Member Auth System Team
+ * @author Timmy
  * @version 1.0.0
  */
 @Configuration

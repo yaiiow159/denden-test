@@ -80,13 +80,8 @@ public class AuthServiceImpl implements AuthService {
         log.info("驗證 Token 建立成功，Token ID: {}, 過期時間: {}", 
                 verificationToken.getId(), verificationToken.getExpiresAt());
         
-        try {
-            emailService.sendVerificationEmail(user.getEmail(), verificationToken.getToken());
-            log.info("驗證郵件已發送，Email: {}", MaskingUtils.maskEmail(user.getEmail()));
-        } catch (Exception e) {
-            log.error("發送驗證郵件失敗，Email: {}, 錯誤: {}", 
-                    MaskingUtils.maskEmail(user.getEmail()), e.getMessage(), e);
-        }
+        emailService.sendVerificationEmail(user.getEmail(), verificationToken.getToken());
+        log.info("驗證郵件已發送，User ID: {}", user.getId());
         
         log.info("會員註冊流程完成，User ID: {}", user.getId());
     }
@@ -126,6 +121,10 @@ public class AuthServiceImpl implements AuthService {
         verificationToken.markAsUsed();
         verificationTokenRepository.save(verificationToken);
         log.info("驗證 Token 已標記為已使用，Token ID: {}", verificationToken.getId());
+        
+        emailService.sendWelcomeEmail(user.getEmail(), user.getEmail());
+        log.info("歡迎郵件已發送，User ID: {}", user.getId());
+        
         log.info("Email 驗證流程完成，User ID: {}", user.getId());
     }
     
@@ -207,8 +206,8 @@ public class AuthServiceImpl implements AuthService {
         log.info("密碼驗證成功，Email: {}", MaskingUtils.maskEmail(request.email()));
         
         String otp = otpService.generateOtp();
-        String sessionId = otpService.createOtpSession(request.email(), otp);
-        log.info("OTP 已產生，Session ID: {}, Email: {}", sessionId, MaskingUtils.maskEmail(request.email()));
+        otpService.createOtpSession(request.email(), otp);
+        log.info("OTP 已產生，Email: {}", MaskingUtils.maskEmail(request.email()));
         
         try {
             emailService.sendOtpEmail(request.email(), otp);
@@ -220,60 +219,47 @@ public class AuthServiceImpl implements AuthService {
         
         log.info("登入第一階段完成，Email: {}", MaskingUtils.maskEmail(request.email()));
         
-        return OtpResponse.of(sessionId, (long) securityProperties.getOtp().getExpirationSeconds());
+        return OtpResponse.of(
+            (long) securityProperties.getOtp().getExpirationSeconds(),
+            MaskingUtils.maskEmail(request.email())
+        );
     }
     
     @Override
     @Transactional
     public AuthResponse verifyOtp(VerifyOtpRequest request) {
-        log.info("開始處理 OTP 驗證請求，Session ID: {}", request.sessionId());
+        log.info("開始 OTP 驗證，Email: {}", MaskingUtils.maskEmail(request.email()));
         
-        String email = otpService.getEmailFromSession(request.sessionId());
-        if (email == null) {
-            log.warn("OTP 會話不存在或已過期，Session ID: {}", request.sessionId());
-            throw new BusinessException(ErrorCode.OTP_SESSION_NOT_FOUND);
-        }
-        
-        boolean isValid = otpService.validateOtp(request.sessionId(), request.otp());
-        
+        // 驗證 OTP（使用 email 而非 sessionId）
+        boolean isValid = otpService.verifyOtpByEmail(request.email(), request.otp());
         if (!isValid) {
-            int attempts = otpService.incrementOtpAttempts(request.sessionId());
-            log.warn("OTP 驗證失敗，Session ID: {}, Email: {}, 嘗試次數: {}", 
-                    request.sessionId(), MaskingUtils.maskEmail(email), attempts);
-            
-            int maxAttempts = securityProperties.getOtp().getMaxAttempts();
-            if (attempts >= maxAttempts) {
-                log.warn("OTP 驗證失敗次數超過限制，Session ID: {}, Email: {}", 
-                        request.sessionId(), MaskingUtils.maskEmail(email));
-                otpService.invalidateOtp(request.sessionId());
-                throw new BusinessException(ErrorCode.OTP_ATTEMPTS_EXCEEDED);
-            }
-            
-            throw new BusinessException(ErrorCode.INVALID_OTP);
+            log.warn("OTP 驗證失敗，Email: {}", MaskingUtils.maskEmail(request.email()));
+            throw new BusinessException(ErrorCode.INVALID_OTP, "OTP 驗證失敗");
         }
         
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> {
-                    log.error("使用者不存在，Email: {}", MaskingUtils.maskEmail(email));
-                    return new BusinessException(ErrorCode.USER_NOT_FOUND);
-                });
+        log.info("OTP 驗證成功，Email: {}", MaskingUtils.maskEmail(request.email()));
         
+        // 查找使用者
+        User user = userRepository.findByEmail(request.email())
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, "使用者不存在"));
+        
+        // 更新最後登入時間
         LocalDateTime loginTime = LocalDateTime.now();
         user.setLastLoginAt(loginTime);
         userRepository.save(user);
         log.info("使用者最後登入時間已更新到資料庫，User ID: {}, Email: {}", 
                 user.getId(), MaskingUtils.maskEmail(user.getEmail()));
         
+        // 記錄登入時間到 Redis
         loginHistoryService.recordLoginTime(user.getId(), loginTime);
         log.info("使用者登入時間已記錄到 Redis ZSet，User ID: {}", user.getId());
         
+        // 產生 JWT Token
         String jwtToken = tokenService.generateJwtToken(user);
         log.info("JWT Token 已產生，User ID: {}, Email: {}", 
                 user.getId(), MaskingUtils.maskEmail(user.getEmail()));
         
-        otpService.invalidateOtp(request.sessionId());
-        log.info("OTP 會話已刪除，Session ID: {}", request.sessionId());
-        
+        // 建立使用者資訊
         UserInfo userInfo = new UserInfo(
                 user.getId(),
                 user.getEmail(),
@@ -289,35 +275,34 @@ public class AuthServiceImpl implements AuthService {
     
     @Override
     @Transactional
-    public OtpResponse resendOtp(String sessionId) {
-        log.info("開始處理重新發送 OTP 請求，Session ID: {}", sessionId);
+    public OtpResponse resendOtp(String email) {
+        log.info("開始重新發送 OTP，Email: {}", MaskingUtils.maskEmail(email));
         
-        String email = otpService.getEmailFromSession(sessionId);
-        if (email == null) {
-            log.warn("OTP 會話不存在或已過期，Session ID: {}", sessionId);
-            throw new BusinessException(ErrorCode.OTP_SESSION_NOT_FOUND);
+        // 檢查是否有活躍的 OTP 會話
+        if (!otpService.hasActiveSession(email)) {
+            log.warn("無活躍的 OTP 會話，Email: {}", MaskingUtils.maskEmail(email));
+            throw new BusinessException(ErrorCode.OTP_SESSION_NOT_FOUND, "無活躍的 OTP 會話");
         }
         
+        // 產生新的 OTP
         String newOtp = otpService.generateOtp();
-        log.info("新的 OTP 已產生，Email: {}", MaskingUtils.maskEmail(email));
-        
-        otpService.invalidateOtp(sessionId);
-        
-        String newSessionId = otpService.createOtpSession(email, newOtp);
-        log.info("新的 OTP 會話已建立，Session ID: {}, Email: {}", newSessionId, MaskingUtils.maskEmail(email));
+        otpService.updateOtpSessionByEmail(email, newOtp);
+        log.info("新 OTP 已產生，Email: {}", MaskingUtils.maskEmail(email));
         
         try {
             emailService.sendOtpEmail(email, newOtp);
-            log.info("新的 OTP 郵件已發送，Email: {}", MaskingUtils.maskEmail(email));
+            log.info("OTP 郵件已重新發送，Email: {}", MaskingUtils.maskEmail(email));
         } catch (Exception e) {
-            log.error("發送 OTP 郵件失敗，Email: {}, 錯誤: {}", 
+            log.error("重新發送 OTP 郵件失敗，Email: {}, 錯誤: {}", 
                     MaskingUtils.maskEmail(email), e.getMessage(), e);
-            throw new BusinessException(ErrorCode.EMAIL_SERVICE_ERROR);
         }
         
-        log.info("重新發送 OTP 流程完成，Email: {}", MaskingUtils.maskEmail(email));
+        log.info("重新發送 OTP 完成，Email: {}", MaskingUtils.maskEmail(email));
         
-        return OtpResponse.of(newSessionId, (long) securityProperties.getOtp().getExpirationSeconds());
+        return OtpResponse.of(
+            (long) securityProperties.getOtp().getExpirationSeconds(),
+            MaskingUtils.maskEmail(email)
+        );
     }
     
     /**

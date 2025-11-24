@@ -27,9 +27,9 @@ import java.util.Map;
 /**
  * 使用者資訊查詢控制器
  * 
- * <p>提供已認證使用者查詢自己資訊的 API 端點：
+ * <p>提供已認證使用者查詢自己資訊的 API 端點</p>
  * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 @Slf4j
@@ -46,10 +46,6 @@ public class UserController {
      * 取得當前使用者資訊
      * 
      * <p>從 JWT Token 提取使用者身份，查詢並返回使用者的基本資訊</p>
-     * 
-     * <p><b>認證要求：</b> 需要有效的 JWT Token</p>
-     * 
-     * <p><b>權限控制：</b> 使用者只能查詢自己的資訊</p>
      * 
      * @return ResponseEntity 包含 UserInfo 的響應
      * 
@@ -95,10 +91,6 @@ public class UserController {
      * 取得當前使用者最後登入時間
      * 
      * <p>從 JWT Token 提取使用者身份，查詢並返回最後登入時間</p>
-     * 
-     * <p><b>認證要求：</b> 需要有效的 JWT Token</p>
-     * 
-     * <p><b>權限控制：</b> 使用者只能查詢自己的登入時間</p>
      * 
      * @return ResponseEntity 包含最後登入時間的響應
      * 
@@ -149,7 +141,7 @@ public class UserController {
 
     /**
      * 從 SecurityContext 提取當前認證使用者的 Email
-     *      * 
+     *      
      * @return 當前使用者的 Email 地址
      * @throws IllegalStateException 當無法取得認證資訊時
      */

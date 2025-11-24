@@ -12,9 +12,7 @@ import java.util.stream.Collectors;
 /**
  * 郵件發送器工廠
  * 
- * 根據配置自動注入可用的發送器，並提供獲取當前發送器的方法。
- * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 @Component

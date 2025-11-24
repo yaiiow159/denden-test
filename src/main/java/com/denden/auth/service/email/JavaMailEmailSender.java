@@ -14,10 +14,7 @@ import org.springframework.stereotype.Component;
 /**
  * JavaMail 郵件發送實現
  * 
- * <p>使用 Spring JavaMailSender 發送郵件的策略實現。
- * 支援 SMTP 協議
- * 
- * @author Member Auth System
+ * @author Timmy
  * @since 1.0.0
  */
 @Component
@@ -31,7 +28,7 @@ public class JavaMailEmailSender implements EmailSender {
     @Value("${app.mail.javamail.username}")
     private String fromEmail;
     
-    @Value("${app.mail.from-name:Member Auth System}")
+    @Value("${app.mail.from-name:DenDen}")
     private String fromName;
     
     @Override

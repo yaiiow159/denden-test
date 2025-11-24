@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 /**
  * 登入嘗試記錄實體
- * 記錄所有登入嘗試，用於帳號鎖定機制與安全監控
+ * 記錄所有登入嘗試
  */
 @Getter
 @Setter

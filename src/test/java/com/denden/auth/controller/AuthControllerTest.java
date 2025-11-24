@@ -160,10 +160,10 @@ class AuthControllerTest {
     }
 
     @Test
-    @DisplayName("登入成功 - 應返回 OTP Session ID")
+    @DisplayName("登入成功 - 應返回遮罩後的 Email 和有效期限")
     void testLoginSuccess() throws Exception {
         LoginRequest request = new LoginRequest("test@example.com", "SecurePass123!");
-        OtpResponse otpResponse = OtpResponse.of("session-123", 300L);
+        OtpResponse otpResponse = OtpResponse.of(300L, "t***@example.com");
         
         when(authService.login(any(LoginRequest.class), anyString())).thenReturn(otpResponse);
         
@@ -171,8 +171,9 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.sessionId").value("session-123"))
-                .andExpect(jsonPath("$.expiresIn").value(300));
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.expiresIn").value(300))
+                .andExpect(jsonPath("$.maskedEmail").value("t***@example.com"));
         
         verify(authService, times(1)).login(any(LoginRequest.class), anyString());
     }
@@ -231,7 +232,7 @@ class AuthControllerTest {
     @Test
     @DisplayName("OTP 驗證成功 - 應返回 JWT Token")
     void testVerifyOtpSuccess() throws Exception {
-        VerifyOtpRequest request = new VerifyOtpRequest("session-123", "123456");
+        VerifyOtpRequest request = new VerifyOtpRequest("test@example.com", "123456");
         UserInfo userInfo = new UserInfo(1L, "test@example.com", LocalDateTime.now());
         AuthResponse authResponse = AuthResponse.bearer("jwt-token-123", 86400L, userInfo);
         
@@ -251,9 +252,9 @@ class AuthControllerTest {
     }
 
     @Test
-    @DisplayName("OTP 驗證失敗 - OTP 無效")
+    @DisplayName("OTP 驗證失敗 - OTP 格式無效")
     void testVerifyOtpInvalidOtp() throws Exception {
-        VerifyOtpRequest request = new VerifyOtpRequest("session-123", "wrong-otp");
+        VerifyOtpRequest request = new VerifyOtpRequest("test@example.com", "wrong-otp");
         
         mockMvc.perform(post("/api/v1/auth/verify-otp")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -265,52 +266,53 @@ class AuthControllerTest {
     }
 
     @Test
-    @DisplayName("OTP 驗證失敗 - Session 不存在")
-    void testVerifyOtpSessionNotFound() throws Exception {
-        VerifyOtpRequest request = new VerifyOtpRequest("invalid-session", "123456");
+    @DisplayName("OTP 驗證失敗 - OTP 無效或已過期")
+    void testVerifyOtpInvalidOrExpired() throws Exception {
+        VerifyOtpRequest request = new VerifyOtpRequest("test@example.com", "123456");
         
         when(authService.verifyOtp(any(VerifyOtpRequest.class)))
-                .thenThrow(new BusinessException(ErrorCode.OTP_SESSION_NOT_FOUND));
+                .thenThrow(new BusinessException(ErrorCode.INVALID_OTP));
         
         mockMvc.perform(post("/api/v1/auth/verify-otp")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.code").value(ErrorCode.OTP_SESSION_NOT_FOUND.getCode()));
+                .andExpect(jsonPath("$.code").value(ErrorCode.INVALID_OTP.getCode()));
         
         verify(authService, times(1)).verifyOtp(any(VerifyOtpRequest.class));
     }
 
     @Test
-    @DisplayName("重新發送 OTP 成功 - 應返回新的 Session ID")
+    @DisplayName("重新發送 OTP 成功 - 應返回遮罩後的 Email 和有效期限")
     void testResendOtpSuccess() throws Exception {
-        String sessionId = "session-123";
-        OtpResponse otpResponse = OtpResponse.of("new-session-456", 300L);
+        String email = "test@example.com";
+        OtpResponse otpResponse = OtpResponse.of(300L, "t***@example.com");
         
-        when(authService.resendOtp(sessionId)).thenReturn(otpResponse);
+        when(authService.resendOtp(email)).thenReturn(otpResponse);
         
         mockMvc.perform(post("/api/v1/auth/resend-otp")
-                        .param("sessionId", sessionId))
+                        .param("email", email))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.sessionId").value("new-session-456"))
-                .andExpect(jsonPath("$.expiresIn").value(300));
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.expiresIn").value(300))
+                .andExpect(jsonPath("$.maskedEmail").value("t***@example.com"));
         
-        verify(authService, times(1)).resendOtp(sessionId);
+        verify(authService, times(1)).resendOtp(email);
     }
 
     @Test
-    @DisplayName("重新發送 OTP 失敗 - Session 不存在")
-    void testResendOtpSessionNotFound() throws Exception {
-        String sessionId = "invalid-session";
+    @DisplayName("重新發送 OTP 失敗 - 無活躍的 OTP 會話")
+    void testResendOtpNoActiveSession() throws Exception {
+        String email = "test@example.com";
         
-        when(authService.resendOtp(sessionId))
+        when(authService.resendOtp(email))
                 .thenThrow(new BusinessException(ErrorCode.OTP_SESSION_NOT_FOUND));
         
         mockMvc.perform(post("/api/v1/auth/resend-otp")
-                        .param("sessionId", sessionId))
+                        .param("email", email))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.code").value(ErrorCode.OTP_SESSION_NOT_FOUND.getCode()));
         
-        verify(authService, times(1)).resendOtp(sessionId);
+        verify(authService, times(1)).resendOtp(email);
     }
 }
