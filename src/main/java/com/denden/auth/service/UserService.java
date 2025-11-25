@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 /**
  * 使用者服務介面
  * 
- * <p>提供使用者資訊查詢相關功能</p>
- * 
  * @author Timmy
  * @since 1.0.0
  */

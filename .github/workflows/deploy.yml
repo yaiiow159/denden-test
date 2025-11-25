@@ -100,7 +100,7 @@ jobs:
               echo "Please update .env with actual values!"
             fi
             
-            # 確保日誌目錄存在且權限正確（自動修復權限問題）
+            # 確保日誌目錄存在且權限正確
             echo "Preparing log directories..."
             sudo mkdir -p /var/lib/member-auth/logs
             sudo chown -R $(id -u):$(id -g) /var/lib/member-auth/logs

@@ -6,8 +6,6 @@ import io.jsonwebtoken.Claims;
 /**
  * JWT Token 服務介面
  * 
- * <p>提供 JWT Token 的生成、驗證與解析功能，用於實現無狀態的使用者認證機制。</p>
- *
  * @author Timmy
  * @since 1.0.0
  */

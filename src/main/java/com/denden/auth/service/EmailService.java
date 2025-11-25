@@ -3,13 +3,6 @@ package com.denden.auth.service;
 /**
  * Email 發送服務介面
  * 
- * <p>定義系統中所有 Email 發送相關的操作，包含：
- * <ul>
- *   <li>發送帳號驗證郵件</li>
- *   <li>發送 OTP 驗證碼郵件</li>
- *   <li>發送帳號鎖定通知郵件</li>
- * </ul>
- * 
  * @author Timmy
  * @since 1.0.0
  */

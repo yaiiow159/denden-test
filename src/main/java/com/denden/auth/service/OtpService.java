@@ -2,8 +2,7 @@ package com.denden.auth.service;
 
 /**
  * OTP (One-Time Password) 服務介面
- * 負責 OTP 的生成、驗證、儲存與失效管理
- * 
+ *  
  * @author Timmy
  * @since 2.0.0
  */

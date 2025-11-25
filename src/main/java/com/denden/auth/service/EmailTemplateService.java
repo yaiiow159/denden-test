@@ -3,8 +3,6 @@ package com.denden.auth.service;
 /**
  * 郵件模板服務介面
  * 
- * <p>負責構建各種類型的郵件 HTML 內容，將模板邏輯與郵件發送邏輯分離。</p>
- * 
  * @author Timmy
  * @since 1.0.0
  */
