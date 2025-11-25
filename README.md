@@ -65,8 +65,8 @@
 
 ### 第三方服務
 - **郵件服務**（擇一）：
-  - Mailjet 帳號（推薦，免費 6,000 封/月）
-  - Gmail 應用程式密碼
+  - Mailjet API
+  - Gmail API
   - 其他 SMTP 服務
 
 ##  快速開始
